@@ -1,0 +1,25 @@
+// const mongodb = require('mongodb')
+
+// //mongodb connection
+// async function dbConnection(req, res, next){
+//     if(global['db']){
+//         next()
+//     }
+//     else{
+//         //mongodb.MongoClient.connect("mongodb://localhost:27017", {useUnifiedTopology: true}, function(error, client){
+//             //                            db url                         configuration              callback func
+//         let client= await mongodb.MongoClient.connect("mongodb://localhost:27017")
+//         if(client.db){
+//             console.log('connected to db')
+//             global['db'] = client.db('TODO') //will create a database instance and store it in global variable
+//             next()
+//         }
+//         else{
+//             throw {error: "couldn't connect to db"}
+//         }
+//     }
+// }
+
+
+// //tell express to make db conn
+// app.use(dbConnection)

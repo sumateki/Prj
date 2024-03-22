@@ -1,0 +1,173 @@
+requriments gathering for TODO app
+    - API list
+        - createTask
+        - getTaskLists
+        - uppdateTask
+        - deleteTask
+        - register
+        - login
+        - logout
+
+    - DB
+        - Collection list:
+            - users --> user registered data
+                users{
+                    name: 'Suma Teki',
+                    email: 'suma@gmail.com',
+                    dob: '14-02-2002',
+                    phone: 7095497479,
+                    password: 'suma123',
+                    gender: 'Female'
+                }
+            - tasks --> user entered task
+                task{
+                   title: 'write js code',
+                   description: 'create todo application using js',
+                   startDate: '2024-03-17',
+                   endDate: '2024-03-17',
+                   is_completed: false,
+                   user_id: ObjectID(" ") //mongoDB user _id
+                }
+
+Database connection
+- global --> used  jst like let, var, const    
+         --> by default it is an obj in node.js    
+         --> 
+
+- window obj in browser         
+
+
+
+
+
+
+{
+    "title": "Complete Nodejs session",
+    "description": "Learning and practicing the Nodejs",
+    "startDate": "2024-03-01",
+    "endDate": "2024-03-30",
+    "is_completed": false,
+    "is_deleted": false
+}
+
+{
+    "title": "Complete MongoDB session",
+    "description": "Learning and practicing the MongoDB",
+    "startDate": "2024-02-15",
+    "endDate": "2024-02-29",
+    "is_completed": true,
+    "is_deleted": false
+}
+
+{
+    "title": "Complete Advanced Data Structures session",
+    "description": "Learning and practicing the ADS",
+    "startDate": "2023-02-01",
+    "endDate": "2024-02-14",
+    "is_completed": true,
+    "is_deleted": false
+}
+
+{
+    "title": "Complete Reactjs session",
+    "description": "Learning and practicing the Reactjs",
+    "startDate": "2024-01-01",
+    "endDate": "2024-01-31",
+    "is_completed": true,
+    "is_deleted": false
+}
+
+
+
+{
+    "title": "Complete SQL session",
+    "description": "Learning and practicing the SQL",
+    "startDate": "2023-12-15",
+    "endDate": "2023-12-31",
+    "is_completed": true,
+    "is_deleted": false
+}
+
+{
+    "title": "Complete Data Structures session",
+    "description": "Learning and practicing the DS",
+    "startDate": "2023-12-01",
+    "endDate": "2023-12-14",
+    "is_completed": true,
+    "is_deleted": false
+}
+
+{
+    "title": "Complete Java Script session",
+    "description": "Learning and practicing the js",
+    "startDate": "2023-11-01",
+    "endDate": "2023-11-30",
+    "is_completed": true,
+    "is_deleted": false
+}
+
+{
+    "title": "Complete CSS session",
+    "description": "Learning and practicing the css",
+    "startDate": "2023-10-01",
+    "endDate": "2023-10-31",
+    "is_completed": true,
+    "is_deleted": false
+}
+
+{
+    "title": "Complete HTML session",
+    "description": "Learning and practicing the html",
+    "startDate": "2023-09-01",
+    "endDate": "2023-09-30",
+    "is_completed": true,
+    "is_deleted": false
+}
+
+
+//-------------- USERS LIST --------------
+
+{
+    "name": "Suma Teki",
+    "email": "suma@gmail.com",
+    "dob": "14-02-2002",
+    "phone": 7095497479,
+    "password": "suma123",
+    "gender": "Female"
+}
+
+{
+    "name": "Sowji Panchakarla",
+    "email": "sowji@gmail.com",
+    "dob": "26-07-2002",
+    "phone": 9988776655,
+    "password": "sowji123",
+    "gender": "Female"
+}
+
+{
+    "name": "Nagendra Tatavarthi",
+    "email": "nag@gmail.com",
+    "dob": "15-06-2000",
+    "phone": 1234567809,
+    "password": "nag123",
+    "gender": "Male"
+}
+
+{
+    "name": "Dileep Tammana",
+    "email": "dileep@gmail.com",
+    "dob": "24-02-2001",
+    "phone": 2345617897,
+    "password": "dileep123",
+    "gender": "Male"
+}
+
+{
+    "name": "Venky Tiparthi",
+    "email": "venky@gmail.com",
+    "dob": "26-01-2000",
+    "phone": 8976543299,
+    "password": "venky123",
+    "gender": "Male"
+}
