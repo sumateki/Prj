@@ -6,6 +6,7 @@ const MongoClient= require('mongodb').MongoClient
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 const jwtSecretKey = "MyNameisSuma!@#$%"
+const {ObjectId} = mongodb
 
 const url= 'mongodb://localhost:27017'
 const dbName= 'Todo'
@@ -73,12 +74,7 @@ MongoClient.connect(url, (err, data)=>
         })  
     })
 
-    //------ LOGOUT ----------
-    app.get("/logout", function(req, res, next){
-        res.clearCookie("login_token")
-        res.json({result: "Logged out successfully", code: 1})
-            
-    })
+    
 
     //middleware for authenticating the api's
     app.use(function(req,res,next){
@@ -86,6 +82,7 @@ MongoClient.connect(url, (err, data)=>
         if(!cookies.login_token) return res.json({message: "No token found."})
         const verified = jwt.verify(cookies.login_token, jwtSecretKey)
         if(verified){
+            req.user = verified
             next()
         }
         else{
@@ -94,8 +91,17 @@ MongoClient.connect(url, (err, data)=>
     })
 
 
+    //------ LOGOUT ----------
+    app.get("/logout", function(req, res, next){
+        res.clearCookie("login_token")
+        res.json({result: "Logged out successfully", code: 1})
+            
+    })
+
+    
     app.get('/getTask', function(req, res, next){
-        db.collection("Tasks").find().toArray(function(err, tasks){
+        let user = req.user
+        db.collection("Tasks").find({user_id : new ObjectId(user.id)}).toArray(function(err, tasks){
             if(err){
                 console.log(err);
                 return res.status(500).json({ error: 'Failed to fetch data' });
@@ -106,7 +112,9 @@ MongoClient.connect(url, (err, data)=>
 
 
     app.post("/createTask", function(req, res, next){
+        let user = req.user
         let task = req.body
+        task['user_id'] = new ObjectId(user.id)
         db.collection("Tasks").insertOne(task, function(err, result){
             if(err){
                 console.log(err)
@@ -119,12 +127,13 @@ MongoClient.connect(url, (err, data)=>
 
 
     app.post('/updateTask', function(req, res, next){
+        let user = req.user
         let { taskid, updatedTask } = req.body;
         // Check if taskid is a valid ObjectId
         if (!mongodb.ObjectId.isValid(taskid)) {
             return res.status(400).json({ error: 'Invalid taskid' });
         }
-        db.collection("Tasks").updateOne({ _id: new mongodb.ObjectId(taskid) }, { "$set": updatedTask }, function(err, result){
+        db.collection("Tasks").updateOne({ _id: new mongodb.ObjectId(taskid), user_id : new ObjectId(user.id) }, { "$set": updatedTask }, function(err, result){
             if(err){
                 console.log(err)
                 return res.status(500).json({ error: 'Failed to update document' })
@@ -136,12 +145,13 @@ MongoClient.connect(url, (err, data)=>
 
 
     app.post('/deleteTask', function(req, res, next){  
+        let user = req.user
         let taskid = req.body.taskid
         // Check if taskid is a valid ObjectId
         if (!mongodb.ObjectId.isValid(taskid)) {
             return res.status(400).json({ error: 'Invalid taskid' });
         }
-        db.collection("Tasks").deleteOne({ _id: new mongodb.ObjectId(taskid) }, function(err, result){
+        db.collection("Tasks").deleteOne({ _id: new mongodb.ObjectId(taskid), user_id : new ObjectId(user.id) }, function(err, result){
             if(err){
                 console.log(err)
                 return res.status(500).json({ error: 'Failed to update document' })
