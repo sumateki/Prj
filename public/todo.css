@@ -1,0 +1,59 @@
+.div-cls{
+    position: relative;
+    align-items: center;
+    display: flex;
+    justify-content: center;  /* Centers the h1 horizontally */
+    height: 100px; /* Ensure enough height for centering */
+}
+
+h1{
+    color: green;
+    text-align: center;
+    flex-grow: 1;  /* Allows the h1 to take up remaining space */
+    margin: 0; /* Remove any default margin */
+}
+
+.anchors{
+    display: flex;
+    gap: 10px;  /* Adds some space between the anchor tags */
+    /* position: absolute; */
+    /* right: 10px;  Adjust the right position if necessary */
+    /* top: 50%;   Center vertically */
+    /* transform: translateY(-50%);  Adjust for vertical centering */
+
+}
+
+.anchor{
+    display: inline-block;
+    text-decoration: none;
+    color: red;
+    padding: 10px;
+    font-size: 20px;
+}
+
+.anchor.todo{
+    color: black;
+    font-size: 30px;
+}
+
+.anchor .todoTask{
+    font-size: 20px;
+}
+
+ul li{
+    list-style-type: none;
+    padding: 5px;
+}
+
+/* media query for  mobile devices */
+@media only screen and (max-width: 768px) {
+    .anchors{
+        position: absolute;
+        top:0;
+        right: 0;
+        bottom: 0;
+    }
+    .anchors .anchor{
+        padding: 5px;
+    }  
+}

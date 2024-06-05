@@ -1,12 +1,15 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
+const path = require('path')
 const mongodb = require('mongodb')
 const MongoClient= require('mongodb').MongoClient
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 const jwtSecretKey = "MyNameisSuma!@#$%"
 const {ObjectId} = mongodb
+
+
 
 const url= 'mongodb://localhost:27017'
 const dbName= 'Todo'
@@ -21,27 +24,47 @@ MongoClient.connect(url, (err, data)=>
     const db= data.db(dbName)
 
 
-    //tell express to use body parser
+    //middleware setup --- tell express to use body parser
     app.use(bodyParser.urlencoded({extended: false}))
     app.use(bodyParser.json({limit: '110mb'}))
     app.use(cookieParser())
 
+    app.set('views', path.join(__dirname, 'public/views'))
+    app.set('view engine', 'ejs')  // Set EJS as the view engine
 
-    //------------- creating APIs --------------
+    app.use(express.static(path.join(__dirname, 'public')))
+
+    //-------------Routes -- creating APIs --------------
     //get
     app.get('/', function(req,res, next){
-        res.send('Hello World')
+        res.sendFile(path.join(__dirname, 'public', 'todo.html'))
     })
 
-     // --------- REGISTER ----------
-     app.post("/register", function(req, res, next){
+    // --------- REGISTER ----------
+    app.post("/register", function(req, res, next){
         let user = req.body
-        db.collection("Users").insertOne(user, function(err, result){
+
+        db.collection("Users").findOne({ $or: [{email: user.email}, {phone: user.phone}] }, function(err, existingUser){
             if(err){
                 console.log(err)
-                return res.status(500).json({error: 'Failed to insert user data'})
+                return res.status(500).json({error: 'Internal server error'})
             }
-            res.json({result: "Inserted Successfully"})
+            if(existingUser){
+                if(existingUser.email === user.email){
+                    return res.json({ error: 'Email is already registered. Please go to Login page!!'})
+                }
+                if(existingUser.phone === user.phone){
+                    return res.json({ error: 'Phone number is already registered.'})
+                }
+            }
+
+            db.collection("Users").insertOne(user, function(err, result){
+                if(err){
+                    console.log(err)
+                    return res.status(500).json({error: 'Failed to insert user data'})
+                }
+                res.json({result: "User Registered Successfully"})
+            }) 
         })    
     })
 
@@ -69,12 +92,22 @@ MongoClient.connect(url, (err, data)=>
                 }
                 const token = jwt.sign(data, jwtSecretKey)
                 res.cookie("login_token", token)
-                res.json({result: "Login Successfully!!", code: 1})
+                return res.json({result: "Login Successfully!!", code: 1})
+                
             }        
         })  
     })
 
-    
+    // ------- TASKSLIST ----------------
+
+    app.get('/tasksList', function(req,res){
+        if(req.cookies.login_token){
+            res.sendFile(path.join(__dirname, 'public/todo', 'tasksList.html'))
+        }
+        else{
+            res.redirect('/login.html')
+        }
+    })
 
     //middleware for authenticating the api's
     app.use(function(req,res,next){
@@ -95,7 +128,7 @@ MongoClient.connect(url, (err, data)=>
     app.get("/logout", function(req, res, next){
         res.clearCookie("login_token")
         res.json({result: "Logged out successfully", code: 1})
-            
+        res.redirect('/todo/login')      
     })
 
     
@@ -106,11 +139,12 @@ MongoClient.connect(url, (err, data)=>
                 console.log(err);
                 return res.status(500).json({ error: 'Failed to fetch data' });
             }
-            res.json({ result: "Successfully getting the data", data:tasks })
+            // res.json({ result: "Successfully getting the data", data:tasks })
+            res.render('getTask', { tasks: tasks })  // Render getTask.ejs
         })     
     })
 
-
+    
     app.post("/createTask", function(req, res, next){
         let user = req.user
         let task = req.body
@@ -120,7 +154,7 @@ MongoClient.connect(url, (err, data)=>
                 console.log(err)
                 return res.status(500).json({error: 'Failed to insert document'})
             }
-            res.json({result: "Inserted Successfully", code: 1})
+            res.json({result: "Task Created Successfully", code: 1})
         })
              
     })
@@ -129,14 +163,20 @@ MongoClient.connect(url, (err, data)=>
     app.post('/updateTask', function(req, res, next){
         let user = req.user
         let { taskid, updatedTask } = req.body;
+
+        console.log(updatedTask);
+        
         // Check if taskid is a valid ObjectId
         if (!mongodb.ObjectId.isValid(taskid)) {
             return res.status(400).json({ error: 'Invalid taskid' });
         }
-        db.collection("Tasks").updateOne({ _id: new mongodb.ObjectId(taskid), user_id : new ObjectId(user.id) }, { "$set": updatedTask }, function(err, result){
+        db.collection("Tasks").updateOne({ _id: new mongodb.ObjectId(taskid), user_id : new ObjectId(user.id) }, { $set: updatedTask }, function(err, result){
             if(err){
                 console.log(err)
                 return res.status(500).json({ error: 'Failed to update document' })
+            }
+            if (result.matchedCount === 0) {
+                return res.status(404).json({ error: 'Task not found or you are not authorized to update this task' });
             }
             res.json({ result: "Updated Successfully" })
         })
@@ -147,6 +187,7 @@ MongoClient.connect(url, (err, data)=>
     app.post('/deleteTask', function(req, res, next){  
         let user = req.user
         let taskid = req.body.taskid
+
         // Check if taskid is a valid ObjectId
         if (!mongodb.ObjectId.isValid(taskid)) {
             return res.status(400).json({ error: 'Invalid taskid' });
@@ -156,13 +197,15 @@ MongoClient.connect(url, (err, data)=>
                 console.log(err)
                 return res.status(500).json({ error: 'Failed to update document' })
             }
+            if (result.deletedCount === 0) {
+                return res.status(404).json({ error: 'Task not found or you are not authorized to delete this task' });
+            }
             res.json({ result: "Deleted Successfully" })
         })
     })
 
     
    
-
     //create server
     const port = 8000
     app.listen(port, function(){
@@ -170,9 +213,3 @@ MongoClient.connect(url, (err, data)=>
     })
 
 })
-
-
-
-
-
-

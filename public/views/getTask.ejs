@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="todo.css" type="text/css">
+    <title>TODO</title>
+</head>
+<body>
+    <center>
+        <div class="div-cls">
+            <h1 style="color:green;">Get Task!!</h1>
+            <div class="anchors">
+                <a id="tasksListLink" class="anchor todoTask" href="tasksList.html">📋</a>
+                <a class="anchor todo" href="todo.html" >≡</a>
+            </div>
+        </div>
+
+        <!-- Form to enter task ID -->
+        <form id="getTaskForm" method="GET">
+            <label for="taskId">Enter Task ID: </label>
+            <input type="text" id="taskId" name="taskId">
+            <button type="submit">Get Task</button>
+
+        </form>
+
+        <!-- Table to display task details -->
+        
+        <table border="1">
+            <tr>
+                <td>Title</td>
+                <td>Description</td>
+                <td>Start Date</td>
+                <td>End date</td>
+            </tr>
+           
+            <!-- Loop through tasks and create table rows -->
+            <% tasks.forEach(function(task) { %>
+                <tr>
+                    <td> <%= task.title %> </td>
+                    <td> <%= task.description %> </td>
+                    <td> <%= task.startDate %> </td>
+                    <td> <%= task.endDate %> </td>
+                </tr>
+            <% }); %>
+        </table>
+    </center>
+
+    <!-- <script>
+        //wait for the dom to be fully loaded
+        document.getElementById("DOMContentLoaded", function(){
+            document.getElementById('tasksListLink').addEventListener('click', changeColorLink)
+        })
+        function changeColorLink(event){
+            console.log('link clicked')
+            event.target.style.color = 'blue'
+        }
+    </script> -->
+
+    <script src="getTask.js"></script>
+</body>
+</html>

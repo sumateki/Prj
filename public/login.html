@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="todo.css" type="text/css">
+    <title>TODO</title>
+</head>
+<body>
+    <center>
+        <div class="div-cls">
+            <h1 style="color:green;">User Login!!</h1>
+            <a class="anchor todo" href="todo.html" >≡</a>
+        </div>
+        
+        <form id="loginform">
+            <label>Email </label>
+            <input type="email" name="email" placeholder="Enter Your Email" required> <br/><br/>
+            <label>Password </label>
+            <input type="password" name="password" placeholder="Create Your Password" required><br/><br/>
+            <button type="submit">Login</button> <a id="signup-link" class="anchor" href="register.html">SignUp?</a> <br/><br/>
+        </form>
+        <!-- Div to show success/error messages -->
+        <div id="message"></div>
+    </center>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            var signupLink = document.getElementById('signup-link')
+
+            if(signupLink){
+                signupLink.addEventListener('click', function(event){
+                    event.preventDefault()
+                    event.target.style.color = 'blue'
+                    window.location.href = 'register.html'
+                })
+            }
+        })
+    </script>
+    <script src="login.js"></script>
+</body>
+</html>

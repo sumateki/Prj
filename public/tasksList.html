@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="todo.css" type="text/css">
+    <title>TODO</title>
+</head>
+<body>
+    <center>
+        <form>
+            <div class="div-cls">
+                <h1>Welcome to TODO tasks place!!!</h1>
+                <a class="anchor todo" href="todo.html" >≡</a>
+            </div>
+            <ul>
+                <li><a class="anchor" href="createTask.html" id="createTaskLink">Create Task</a></li>
+                <li><a class="anchor" href="/getTask" id="getTaskLink">Get Task</a></li>
+                <li><a class="anchor" href="updateTask.html" id="updateTaskLink">Update Task</a></li>
+                <li><a class="anchor" href="deleteTask.html" id="deleteTaskLink">Delete Task</a></li>
+            </ul>
+        </form>
+    </center>
+
+    <script>
+        //add event listener to each link
+        document.getElementById('createTaskLink').addEventListener('click', changeLinkColor)
+        document.getElementById('getTaskLink').addEventListener('click', changeLinkColor)
+        document.getElementById('updateTaskLink').addEventListener('click',changeLinkColor)
+        document.getElementById('deleteTaskLink').addEventListener('click', changeLinkColor)
+
+        //function to change color
+        function changeLinkColor(event){
+            event.target.style.color = 'blue'
+        }
+    </script>
+</body>
+</html>

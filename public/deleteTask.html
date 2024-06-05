@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="todo.css" type="text/css">
+    <title>TODO</title>
+</head>
+<body>
+    <center>
+        <div class="div-cls">
+            <h1 style="color:green;">Delete Your Task!!</h1>
+            <div class="anchors">
+                <a id="tasksListLink" class="anchor todoTask" href="tasksList.html">📋</a>
+                <a class="anchor todo" href="todo.html" >≡</a>
+            </div>
+        </div>
+
+        <form id="deleteTaskForm" method="post">
+            <label>Task Id</label>
+            <input type="text" id="taskId" name="taskid" placeholder="Enter your Task iD" required><br/><br/>
+            <button type="submit">Delete Task</button> <br/><br/>
+        </form>
+        
+        <!-- Div to show success/error messages -->
+        <div id="message"></div>
+
+    </center>
+    <script src="deleteTask.js"></script>
+</body>
+</html>

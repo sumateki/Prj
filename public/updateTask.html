@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="todo.css" type="text/css">
+    <title>TODO</title>
+</head>
+<body>
+    <center>
+        <div class="div-cls">
+            <h1 style="color:green;">Update Your Task!!</h1>
+            <div class="anchors">
+                <a id="tasksListLink" class="anchor todoTask" href="tasksList.html">📋</a>
+                <a class="anchor todo" href="todo.html" >≡</a>
+            </div>
+        </div>
+        
+        <form id="updateTaskForm" method="post">
+            <label>Task ID </label>
+            <input type="text" id="taskId" name="taskid" placeholder="Enter your task id" required><br/><br/>
+            <label>Title </label>
+            <input type="text" id="title" name="title" placeholder="Enter task title" required><br/><br/>
+            <label>Description </label>
+            <input type="text" id="description" name="description" placeholder="Enter some description" required><br/><br/>
+            <label>Start Date </label>
+            <input type="date" id="strtDate" name="strtDate" placeholder="" required><br/><br/>
+            <label>End Date </label>
+            <input type="date" id="endDate" name="endDate" placeholder="" required><br/><br/>
+            <button type="submit">Update Task</button> <br/><br/>
+
+        </form>
+        <!-- Div to show success/error messages -->
+        <div id="message"></div> 
+    </center>
+    <script src="updateTask.js"></script>
+</body>
+</html>
