@@ -207,9 +207,14 @@ MongoClient.connect(url, (err, data)=>
     
    
     //create server
-    const port = 8000
-    app.listen(port, function(){
-        console.log(`Server is running at port ${port}`)
-    })
+    // const port = 8000
+    // app.listen(port, function(){
+    //     console.log(`Server is running at port ${port}`)
+    // })
+    const port = process.env.PORT || 3000;
+    app.listen(port, '0.0.0.0', () => {
+        console.log(`Server is running at http://localhost:${port}`);
+    });
+
 
 })
