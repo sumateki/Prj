@@ -10,7 +10,6 @@ const jwtSecretKey = "MyNameisSuma!@#$%"
 const {ObjectId} = mongodb
 
 
-
 const url= 'mongodb://localhost:27017'
 const dbName= 'Todo'
 
